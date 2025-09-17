@@ -1,0 +1,24 @@
+import React from 'react'
+import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
+import { allBlogs } from 'contentlayer/generated'
+import LatestPostWidget from './LatestPostWidget'
+
+const LatestPostWidgetContainer: React.FC = () => {
+  const posts = allCoreContent(sortPosts(allBlogs))
+
+  // Фильтруем посты, оставляя только те, у которых draft: false и есть тег 'feriados'
+  const publishedFeriadosPosts = posts.filter(
+    (post) => !post.draft && post.tags && post.tags.includes('feriados')
+  )
+
+  // Берем самый последний опубликованный пост с тегом 'feriados'
+  const latestFeriadosPost = publishedFeriadosPosts[0]
+
+  if (!latestFeriadosPost) {
+    return null
+  }
+
+  return <LatestPostWidget post={latestFeriadosPost} />
+}
+
+export default LatestPostWidgetContainer

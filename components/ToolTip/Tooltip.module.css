@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+/* components/Tooltip/Tooltip.module.css */
+.tooltipTrigger {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    cursor: help;
+    @apply bg-[#00BAD1] bg-opacity-15 rounded-md w-3 h-3 p-3 flex justify-center items-center text-base text-[#00BAD1] 
+}
+
+.tooltip {
+    position: fixed;
+    z-index: 5;
+    max-width: 260px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background-color: rgba(26, 32, 44, 0.98);
+    color: white;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.tooltip--top {}
+
+.tooltip--bottom {}
+
+.tooltip--left {}
+
+.tooltip--right {}

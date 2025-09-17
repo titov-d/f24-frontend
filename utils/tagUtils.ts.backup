@@ -1,0 +1,22 @@
+import { allBlogs } from 'contentlayer/generated'
+import { slug } from 'github-slugger'
+
+export function getPublishedTags() {
+  const publishedBlogs = allBlogs.filter((post) => !post.draft)
+  const tagCounts: Record<string, number> = {}
+
+  publishedBlogs.forEach((post) => {
+    if (post.tags) {
+      post.tags.forEach((tag) => {
+        const sluggedTag = slug(tag)
+        tagCounts[sluggedTag] = (tagCounts[sluggedTag] || 0) + 1
+      })
+    }
+  })
+
+  return {
+    tagCounts,
+    publishedCount: publishedBlogs.length,
+    totalCount: allBlogs.length
+  }
+}

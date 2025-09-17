@@ -1,0 +1,50 @@
+.ratingContainer {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    @apply max-h-max
+}
+
+.stars {
+    @apply flex;
+}
+
+.star {
+    width: 16px;
+    height: 15px;
+    display: inline-block;
+    position: relative;
+    margin-right: 2px;
+}
+
+.star svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 17px;
+}
+
+.emptyStar {
+    z-index: 1;
+}
+
+.filledStar {
+    z-index: 2;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.3s ease-in-out;
+}
+
+.star.full .filledStar {
+    clip-path: inset(0 0 0 0);
+}
+
+.star.half .filledStar {
+    clip-path: inset(0 50% 0 0);
+}
+
+.ratingText {
+    font-size: 14px;
+    color: #EC9759;
+    @apply font-semibold mr-1
+}
+

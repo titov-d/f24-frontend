@@ -1,0 +1,57 @@
+// components/LatestPostWidget.tsx
+import React from 'react'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import Image from 'next/image'
+import { formatDate } from 'pliny/utils/formatDate'
+import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Blog } from 'contentlayer/generated'
+import siteMetadata from '@/data/siteMetadata'
+
+interface LatestPostWidgetProps {
+  post: CoreContent<Blog>
+}
+
+const DynamicContent = dynamic(
+  () =>
+    Promise.resolve(({ post }: LatestPostWidgetProps) => (
+      <>
+        <h2 className="text-md mb-2 font-semibold tracking-tight text-gray-900">
+          {post.title}
+        </h2>
+        <p className="text-md mb-3 font-normal text-gray-700 md:text-sm">
+          {post.summary && post.summary.length > 120
+            ? `${post.summary.substring(0, 120)}...`
+            : post.summary}
+        </p>
+        <p className="text-sm text-gray-500">
+          {formatDate(post.date, siteMetadata.locale)}
+        </p>
+      </>
+    )),
+  { ssr: false }
+)
+
+const LatestPostWidget: React.FC<LatestPostWidgetProps> = ({ post }) => {
+  return (
+    <Link
+      href={`/${post.path}`}
+      className="flex h-full w-full flex-col rounded-lg border-black border-opacity-[.02] bg-gradient-to-br from-[#F3F2F5] to-[#EEEEEE] md:border-[6px] xl:flex-row"
+    >
+      {post.image && (
+        <Image
+          src={post.image}
+          alt={post.title}
+          width={400}
+          height={200}
+          className="max-h-auto w-full rounded-t-lg object-cover object-center xl:max-w-[50%] xl:rounded-l-lg xl:rounded-tr-none"
+        />
+      )}
+      <div className="p-5">
+        <DynamicContent post={post} />
+      </div>
+    </Link>
+  )
+}
+
+export default LatestPostWidget

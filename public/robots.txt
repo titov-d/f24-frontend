@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /_about
+Disallow: /_blog

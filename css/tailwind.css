@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+.task-list-item::before {
+  @apply hidden;
+}
+
+.task-list-item {
+  @apply list-none;
+}
+
+.footnotes {
+  @apply mt-12 border-t border-gray-200 pt-8;
+}
+
+.data-footnote-backref {
+  @apply no-underline;
+}
+
+.csl-entry {
+  @apply my-5;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* https://stackoverflow.com/questions/61083813/how-to-avoid-internal-autofill-selected-style-to-be-applied */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition:
+    background-color 600000s 0s,
+    color 600000s 0s;
+}
+
+.katex-display {
+  overflow: auto hidden;
+}
+
+.content-header-link {
+  opacity: 0;
+  margin-left: -24px;
+  padding-right: 4px;
+}
+
+.content-header:hover .content-header-link,
+.content-header-link:hover {
+  opacity: 1;
+}
+
+.linkicon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.heroTitle {
+    color: #fc3735;
+    background: -webkit-linear-gradient(left, #F57170, #10DDC2, #F57170);
+    background-size: 1600px 200px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation-duration: 30s;
+    animation-name: animationgradienttitle;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes animationgradienttitle {
+  0% {
+    background-position: 0 1600px;
+  }
+
+  100% {
+    background-position: 1600px 0;
+  }
+}
+
+.bg-grid-pattern {
+  background-image:
+    repeating-linear-gradient(transparent, transparent 11px, #ccc 12px),
+    repeating-linear-gradient(90deg, transparent, transparent 11px, #ccc 12px);
+  background-size: 12px 12px;
+}
+
+.eventCard {
+    box-shadow: 7px 12px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+
+@media (min-width: 461px) {
+.recomendaciones>div {
+  grid-template-rows: auto auto;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-areas:
+    "tours tours tours youtube youtube youtube"
+    "movies movies products products products products"
+}}
+
+@media (min-width: 641px) {
+.recomendaciones>div {
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "tours tours tours tours tours tours  youtube youtube youtube youtube youtube youtube"
+    "movies movies movies movies products products products products products products products products"
+}}
+
+@media (min-width: 1000px) {
+  .recomendaciones>div {
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "tours tours tours youtube youtube youtube youtube movies movies products products products"
+  }
+}
+
+@media (min-width: 1280px) {
+.recomendaciones>div {
+  grid-template-areas:
+    "tours tours tours youtube youtube youtube youtube movies movies  products products products";
+}}
+
+@media (max-width: 460px) {
+.recomendaciones > div {
+  grid-template-areas: 
+  "tours movies"
+  "youtube youtube"
+  "products products";
+}}
+
+.recomendaciones > div > div:first-child {
+  grid-area: tours;
+}
+.recomendaciones > div > div:nth-child(2) {
+  grid-area: youtube;
+}
+.recomendaciones > div > div:nth-child(3) {
+  grid-area: movies;
+}
+.recomendaciones > div > div:last-child {
+  grid-area: products;
+}
+
+.recomendaciones > * {
+  min-height: 268px;
+  height: 100%;
+}
+
+/* 6 widgets start */
+
+.homeWidgets > li {
+  @apply flex h-24 md:h-full items-center justify-center rounded-lg bg-gradient-to-br from-[#F3F2F5] to-[#EEEEEE];
+}
+
+/* Próximo feriado 5 widgets layout */
+.homeWidgets>li:not(:last-child)>* {
+  @apply flex-row text-left md:text-center md:flex-col lg:flex-row lg:text-left
+}
+
+/* Próximo feriado separate fix */
+.homeWidgets>li:last-child>div>div {
+  @apply flex-row text-left lg:text-left md:text-center md:flex-col lg:flex-row md:gap-6 lg:gap-0
+}
+
+/* Próximo feriado p fix */
+.homeWidgets>li:last-child>div>div>p {
+  @apply md:flex-row md:gap-2 lg:flex-col lg:gap-0
+}
+
+/* body {
+  background: url('/static/images/pattern-2.svg') repeat !important;
+  background-size: 300px auto !important;
+
+} */
+
+/* 6 widgets end */
+
+article#postLayout .prose {
+  font-size: 1.2rem;
+}
