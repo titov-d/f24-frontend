@@ -77,6 +77,10 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'picsum.photos',
         },
+        {
+          protocol: 'https',
+          hostname: 'http2.mlstatic.com',
+        },
       ],
       unoptimized,
     },

@@ -12,7 +12,8 @@ import TourCard from '@/components/TourCard/TourCard'
 import YouTubeRecommendations from '@/components/YouTubeRecommendations/YouTubeRecommendations'
 import AmazonPrimeRecommendation from '@/components/AmazonPrimeRecommendation/AmazonPrimeRecommendation'
 // Use the new MercadoLibre-powered component
-import ProductRecommendations from '@/components/features/recommendations/ProductRecommendations'
+import ProductRecommendations from '@/components/ProductRecommendations'
+import HolidayProductCards from '@/components/HolidayProductCards'
 
 // import LatestPostWidgetContainer from '@/components/LatestPostWidgetContainer' // Removed - contentlayer not used
 import FeriadosPerdidos from '@/components/FeriadosPerdidos'
@@ -41,6 +42,8 @@ export default function Main({ posts }: MainProps) {
         <HolidayHeroImage />
 
         <HolidayList />
+
+        <HolidayProductCards />
 
         <h2 className="mt-4 border-none pl-4 text-2xl text-[#686868] lg:ml-0 lg:max-w-5xl xl:m-auto xl:mt-8 xl:max-w-7xl xl:pl-0">
           Recomendaciónes

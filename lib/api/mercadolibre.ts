@@ -29,7 +29,7 @@ export async function searchProducts(
   });
 
   const response = await fetch(
-    `${API_BASE_URL}/api/mercadolibre/search?${queryParams}`,
+    `${API_BASE_URL}/api/v1/marketplace/search?${queryParams}`,
     {
       next: { revalidate: 3600 }, // Cache for 1 hour
     }
@@ -39,7 +39,8 @@ export async function searchProducts(
     throw new Error(`Search failed: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  return data;
 }
 
 /**
@@ -54,7 +55,7 @@ export async function getHolidayRecommendations(
   });
 
   const response = await fetch(
-    `${API_BASE_URL}/api/mercadolibre/recommendations/holiday?${queryParams}`,
+    `${API_BASE_URL}/api/v1/marketplace/holiday-products?${queryParams}`,
     {
       next: { revalidate: 3600 }, // Cache for 1 hour
     }
@@ -64,7 +65,8 @@ export async function getHolidayRecommendations(
     throw new Error(`Failed to get recommendations: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  return data.products || [];
 }
 
 /**
@@ -74,7 +76,7 @@ export async function getTrendingProducts(
   limit: number = 10
 ): Promise<MercadoLibreProduct[]> {
   const response = await fetch(
-    `${API_BASE_URL}/api/mercadolibre/trending?limit=${limit}`,
+    `${API_BASE_URL}/api/v1/marketplace/trending?limit=${limit}`,
     {
       next: { revalidate: 3600 }, // Cache for 1 hour
     }
@@ -84,7 +86,8 @@ export async function getTrendingProducts(
     throw new Error(`Failed to get trending products: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  return data.products || [];
 }
 
 /**
