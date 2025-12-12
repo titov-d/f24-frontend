@@ -52,14 +52,23 @@ const LongWeekendsTimeline: React.FC = () => {
       try {
         setIsLoading(true)
         const currentYear = dayjs().year()
-        const response = await fetch(`${API_URL}/widgets/longWeekends?year=${currentYear}`)
+        const nextYear = currentYear + 1
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
+        // Fetch current year and next year in parallel
+        const [currentYearRes, nextYearRes] = await Promise.all([
+          fetch(`${API_URL}/widgets/longWeekends?year=${currentYear}`),
+          fetch(`${API_URL}/widgets/longWeekends?year=${nextYear}`)
+        ])
+
+        if (!currentYearRes.ok || !nextYearRes.ok) {
+          throw new Error('HTTP error fetching long weekends')
         }
 
-        const data: GroupedLongWeekends = await response.json()
-        setGroupedLongWeekends(data)
+        const currentYearData: GroupedLongWeekends = await currentYearRes.json()
+        const nextYearData: GroupedLongWeekends = await nextYearRes.json()
+
+        // Merge both years
+        setGroupedLongWeekends({ ...currentYearData, ...nextYearData })
       } catch (err) {
         setError('Error cargando feriados largos. Por favor intente más tarde.')
         console.error('Error fetching long weekends:', err)
@@ -71,14 +80,9 @@ const LongWeekendsTimeline: React.FC = () => {
   }, [])
 
   const getDayName = (dayOfWeek: number): string => {
-    switch (dayOfWeek) {
-      case 0:
-        return 'Domingo'
-      case 6:
-        return 'Sábado'
-      default:
-        return ''
-    }
+    // Backend uses Python weekday (0=Monday, 6=Sunday)
+    const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    return days[dayOfWeek] || ''
   }
 
   const getCountdown = (date: string): string => {
@@ -104,7 +108,6 @@ const LongWeekendsTimeline: React.FC = () => {
     const start = dayjs.tz(weekend.start, TIMEZONE)
     const end = dayjs.tz(weekend.end, TIMEZONE)
     const now = dayjs().tz(TIMEZONE)
-    const isPast = end.isBefore(now)
     const isCurrent = now.isAfter(start) && now.isBefore(end)
 
     const countdown = getCountdown(weekend.start)
