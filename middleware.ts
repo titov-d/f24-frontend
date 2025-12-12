@@ -9,7 +9,7 @@ export function middleware(request: NextRequest) {
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data: https: mc.yandex.ru;
-    connect-src 'self' https://api.feriados24.cl https://www.fechaslibres.cl http://localhost:8001 https://www.google-analytics.com https://mc.yandex.ru;
+    connect-src 'self' https://api.feriados24.cl https://www.fechaslibres.cl https://www.google-analytics.com https://mc.yandex.ru wss://mc.yandex.ru;
     frame-src 'self' mc.yandex.ru;
     worker-src 'self' blob:;
   `
