@@ -6,6 +6,7 @@ import TourCard from '@/components/TourCard/TourCard'
 import YouTubeRecommendations from '@/components/YouTubeRecommendations/YouTubeRecommendations'
 import AmazonPrimeRecommendation from '@/components/AmazonPrimeRecommendation/AmazonPrimeRecommendation'
 import ProductRecommendations from '@/components/ProductRecommendations/ProductRecommendations'
+import LatestPostWidget from '@/components/LatestPostWidget/LatestPostWidget'
 import FeriadosPerdidos from '@/components/FeriadosPerdidos'
 import TotalFeriados from '@/components/TotalFeriados'
 import FeriadosXL from '@/components/FeriadosXL'
@@ -61,7 +62,7 @@ export default function Main({ posts: _posts }: MainProps) {
                 Crónica de Fiestas
               </h2>
               <div className="m-2 flex h-full items-center justify-center rounded-lg bg-gradient-to-br from-[#F3F2F5] to-[#EEEEEE] md:m-0">
-                {/* <LatestPostWidgetContainer /> */}
+                <LatestPostWidget />
               </div>
             </div>
 
