@@ -22,8 +22,18 @@ interface KanbanCalendarProps {
 }
 
 const MONTHS = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  { name: 'Enero', color: '#4C9AFF' },      // Blue
+  { name: 'Febrero', color: '#F99CDB' },    // Pink
+  { name: 'Marzo', color: '#79E2F2' },      // Cyan
+  { name: 'Abril', color: '#7EE2B8' },      // Green
+  { name: 'Mayo', color: '#FFC400' },       // Yellow
+  { name: 'Junio', color: '#FF8B00' },      // Orange
+  { name: 'Julio', color: '#FF5630' },      // Red
+  { name: 'Agosto', color: '#B38BFF' },     // Purple
+  { name: 'Septiembre', color: '#57D9A3' }, // Teal
+  { name: 'Octubre', color: '#FFC400' },    // Yellow
+  { name: 'Noviembre', color: '#FF7452' },  // Coral
+  { name: 'Diciembre', color: '#2684FF' },  // Bright Blue
 ];
 
 const KanbanCalendar: React.FC<KanbanCalendarProps> = ({ year }) => {
@@ -111,26 +121,27 @@ const KanbanCalendar: React.FC<KanbanCalendarProps> = ({ year }) => {
 
           return (
             <div
-              key={month}
-              className={`kanban-column flex w-[280px] flex-shrink-0 flex-col rounded-lg ${
+              key={month.name}
+              className={`kanban-column flex w-[280px] flex-shrink-0 flex-col overflow-hidden rounded-lg ${
                 isCurrent
-                  ? 'bg-blue-50 ring-2 ring-blue-400'
-                  : 'bg-gray-100'
+                  ? 'ring-2 ring-blue-400'
+                  : ''
               }`}
+              style={{ backgroundColor: '#F4F5F7' }}
             >
+              {/* Colored top border */}
+              <div
+                className="h-2 w-full"
+                style={{ backgroundColor: month.color }}
+              />
+
               {/* Column Header */}
-              <div className={`sticky top-0 z-10 rounded-t-lg px-4 py-3 ${
-                isCurrent ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
-              }`}>
+              <div className="bg-white px-4 py-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide">
-                    {month}
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+                    {month.name}
                   </h3>
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                    isCurrent
-                      ? 'bg-blue-400 text-white'
-                      : 'bg-gray-300 text-gray-600'
-                  }`}>
+                  <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-600">
                     {monthHolidays.length}
                   </span>
                 </div>
