@@ -14,7 +14,7 @@ export const useMonthlyHolidays = (startMonth: number, endMonth: number, year: n
   useEffect(() => {
     const fetchHolidays = async () => {
       try {
-        const response = await fetch(`${API_URL}/holidays/next`);
+        const response = await fetch(`${API_URL}/holidays-simple/next`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
