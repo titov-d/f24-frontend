@@ -29,7 +29,7 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [notFoundState, setNotFoundState] = useState(false)
+  const [notFoundState] = useState(false)
 
   useEffect(() => {
     const fetchPost = async () => {

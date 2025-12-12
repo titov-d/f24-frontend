@@ -1,7 +1,6 @@
 import LongWeekendsTimeline from '@/components/LongWeekendsTimeline/LongWeekendsTimeline'
 import HolidayHeroImage from '@/components/HolidayHeroImage'
 import HolidayList from '@/components/HolidayList/HolidayList'
-import HolidayProductCards from '@/components/HolidayProductCards'
 import TourCard from '@/components/TourCard/TourCard'
 import YouTubeRecommendations from '@/components/YouTubeRecommendations/YouTubeRecommendations'
 import AmazonPrimeRecommendation from '@/components/AmazonPrimeRecommendation/AmazonPrimeRecommendation'
