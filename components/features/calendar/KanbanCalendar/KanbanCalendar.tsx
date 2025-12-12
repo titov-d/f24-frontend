@@ -13,6 +13,8 @@ interface Holiday {
   name: string;
   description?: string;
   irrenunciable?: boolean;
+  is_irrenunciable?: boolean;
+  type?: string;
 }
 
 interface KanbanCalendarProps {
@@ -32,13 +34,22 @@ const KanbanCalendar: React.FC<KanbanCalendarProps> = ({ year }) => {
   useEffect(() => {
     const fetchHolidays = async () => {
       try {
-        const response = await fetch(`${API_URL}/holidays-simple/next`);
+        const response = await fetch(`${API_URL}/holidays/`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        const filtered = data.holidays.filter((h: Holiday) =>
-          dayjs(h.date).year() === year
+        // API returns array directly, filter by year and deduplicate by date+name
+        const yearHolidays = data.filter((h: { date: string; year?: number }) =>
+          h.year === year || dayjs(h.date).year() === year
         );
-        setHolidays(filtered);
+        // Deduplicate by date (some dates have duplicate entries)
+        const seen = new Set<string>();
+        const uniqueHolidays = yearHolidays.filter((h: Holiday) => {
+          const key = `${h.date}-${h.name}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        setHolidays(uniqueHolidays);
       } catch (err) {
         console.error('Error fetching holidays:', err);
         setError('Error cargando feriados');
@@ -162,7 +173,7 @@ const KanbanCalendar: React.FC<KanbanCalendarProps> = ({ year }) => {
 
                         {/* Card Footer - Labels */}
                         <div className="flex flex-wrap gap-1">
-                          {holiday.irrenunciable && (
+                          {(holiday.irrenunciable || holiday.is_irrenunciable) && (
                             <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600">
                               Irrenunciable
                             </span>
