@@ -1,47 +1,14 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-
-interface Product {
-  id: string
-  title: string
-  price: number
-  original_price?: number
-  thumbnail_url?: string
-  permalink: string
-  discount_percentage?: number
-  shipping_free: boolean
-}
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
+import { useProduct } from '../RecommendationsSection/ProductsContext'
 
 const AmazonPrimeRecommendation: React.FC = () => {
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        // Get 5th product (index 4)
-        const response = await fetch(`${API_URL}/api/marketplace/holiday-products/featured?limit=5&shuffle=true`)
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-        const data = await response.json()
-        if (data.products && data.products.length > 4) {
-          setProduct(data.products[4])
-        }
-      } catch (err) {
-        console.error('Error fetching product:', err)
-        setError('Failed to load')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchProduct()
-  }, [])
+  // Get product at index 4 from shared context
+  const { product, loading, error } = useProduct(4)
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('es-CL').format(price)

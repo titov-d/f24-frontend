@@ -11,14 +11,23 @@ export const useFilteredHolidays = (holidays: Holiday[], filters: HolidayFilters
 
   const filterHolidays = useMemo(() => {
     const currentYear = dayjs().year();
-    const now = dayjs().tz('America/Santiago');
+    const nextYear = currentYear + 1;
 
     return holidays.filter((holiday) => {
       const holidayYear = dayjs(holiday.date).year();
       const isWeekendDay = isWeekend(holiday.date);
 
-      return (filters.showWeekends || !isWeekendDay) &&
-             (filters.showNextYear || holidayYear === currentYear);
+      // Show weekends filter
+      if (!filters.showWeekends && isWeekendDay) {
+        return false;
+      }
+
+      // Show next year filter - when checked, include next year holidays
+      if (!filters.showNextYear && holidayYear === nextYear) {
+        return false;
+      }
+
+      return true;
     });
   }, [holidays, filters.showWeekends, filters.showNextYear]);
 

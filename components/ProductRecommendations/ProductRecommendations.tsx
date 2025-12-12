@@ -1,9 +1,10 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useProductRange } from '../RecommendationsSection/ProductsContext'
 
 interface Product {
   id: string
@@ -16,32 +17,9 @@ interface Product {
   shipping_free: boolean
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
-
 const ProductRecommendations: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        // Get products 6 and 7 (indices 5, 6)
-        const response = await fetch(`${API_URL}/api/marketplace/holiday-products/featured?limit=7&shuffle=true`)
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-        const data = await response.json()
-        if (data.products && data.products.length > 5) {
-          setProducts(data.products.slice(5, 7))
-        }
-      } catch (err) {
-        console.error('Error fetching products:', err)
-        setError('Failed to load')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchProducts()
-  }, [])
+  // Get products at indices 5 and 6 from shared context
+  const { products, loading, error } = useProductRange(5, 7)
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('es-CL').format(price)

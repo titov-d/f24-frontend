@@ -121,17 +121,27 @@ const HolidayHeroImage: React.FC = () => {
     )
   }
 
+  // Convert API path to static path
+  const getImagePath = (apiPath?: string): string => {
+    if (!apiPath) return '/static/images/holidays/navidad.webp'
+    // API returns /images/... but files are in /static/images/...
+    if (apiPath.startsWith('/images/')) {
+      return `/static${apiPath}`
+    }
+    return apiPath
+  }
+
   return (
     <div className="mx-auto mb-4 mt-6 w-full text-center xl:max-w-4xl">
       <Image
-        src={holidayToShow.hero_image_url || '/images/holidays/default-holiday.webp'}
+        src={getImagePath(holidayToShow.hero_image_url)}
         alt={holidayToShow.name}
         width={300}
         height={200}
         style={{ width: '100%', height: 'auto' }}
         priority
       />
-      <h1 className="mt-8 text-xl font-semibold uppercase text-[#333]">Feriados Chile 2024</h1>
+      <h1 className="mt-8 text-xl font-semibold uppercase text-[#333]">Feriados Chile {dayjs().year() + 1}</h1>
       <h2 className="mt-6 px-2 text-center text-xl text-[#686868] md:px-8 md:text-2xl lg:mb-10 lg:px-0">
         {isCurrentHoliday
           ? `Hoy celebramos ${holidayToShow.name} 🎉`

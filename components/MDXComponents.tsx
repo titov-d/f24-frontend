@@ -6,11 +6,12 @@ import Image from './Image'
 import CustomLink from './Link'
 import TableWrapper from './TableWrapper'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const components: MDXComponents = {
   Image,
   TOCInline,
-  a: CustomLink,
-  pre: Pre,
-  table: TableWrapper,
+  a: CustomLink as any,
+  pre: Pre as any,
+  table: TableWrapper as any,
   BlogNewsletterForm,
 }

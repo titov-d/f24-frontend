@@ -6,6 +6,7 @@ import TourCard from '@/components/TourCard/TourCard'
 import YouTubeRecommendations from '@/components/YouTubeRecommendations/YouTubeRecommendations'
 import AmazonPrimeRecommendation from '@/components/AmazonPrimeRecommendation/AmazonPrimeRecommendation'
 import ProductRecommendations from '@/components/ProductRecommendations/ProductRecommendations'
+import { ProductsProvider } from '@/components/RecommendationsSection/ProductsContext'
 import LatestPostWidget from '@/components/LatestPostWidget/LatestPostWidget'
 import FeriadosPerdidos from '@/components/FeriadosPerdidos'
 import TotalFeriados from '@/components/TotalFeriados'
@@ -32,27 +33,31 @@ export default function Main({ posts: _posts }: MainProps) {
 
         <HolidayList />
 
+        {/* TODO: Re-enable when product cards are ready
         <HolidayProductCards />
+        */}
 
         <h2 className="mt-4 border-none pl-4 text-2xl text-[#686868] lg:ml-0 lg:max-w-5xl xl:m-auto xl:mt-8 xl:max-w-7xl xl:pl-0">
           Ofertas Destacadas
         </h2>
-        <section className="recomendaciones m-auto max-w-7xl border-none px-4 pt-4 lg:px-0">
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-12 lg:gap-3">
-            <div className="col-span-1 lg:col-span-3">
-              <TourCard />
+        <ProductsProvider>
+          <section className="recomendaciones m-auto max-w-7xl border-none px-4 pt-4 lg:px-0">
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-12 lg:gap-3">
+              <div className="col-span-1 lg:col-span-3">
+                <TourCard />
+              </div>
+              <div className="col-span-1 lg:col-span-3">
+                <YouTubeRecommendations />
+              </div>
+              <div className="col-span-1 lg:col-span-2">
+                <AmazonPrimeRecommendation />
+              </div>
+              <div className="col-span-1 lg:col-span-4">
+                <ProductRecommendations />
+              </div>
             </div>
-            <div className="col-span-1 lg:col-span-3">
-              <YouTubeRecommendations />
-            </div>
-            <div className="col-span-1 lg:col-span-2">
-              <AmazonPrimeRecommendation />
-            </div>
-            <div className="col-span-1 lg:col-span-4">
-              <ProductRecommendations />
-            </div>
-          </div>
-        </section>
+          </section>
+        </ProductsProvider>
 
         <div className="fdGrid container mx-auto border-none lg:max-w-5xl xl:m-auto xl:mt-8 xl:max-w-7xl xl:pl-0">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-12">

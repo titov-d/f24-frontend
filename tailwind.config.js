@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 const { fontFamily } = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 

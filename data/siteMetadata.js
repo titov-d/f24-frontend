@@ -1,10 +1,13 @@
 /** @type {import("pliny/config").PlinyConfig } */
+const currentYear = new Date().getFullYear()
+const nextYear = currentYear + 1
+
 const siteMetadata = {
-  title: 'Calendario Feriados Chile 2024',
+  title: `Calendario Feriados Chile ${nextYear}`,
   author: 'Feriados24',
   headerTitle: 'Feriados24',
   description:
-    'Calendario completo de feriados y días festivos de Chile 2024. Información actualizada sobre celebraciones nacionales y días no laborables. Planifica tus días libres.',
+    `Calendario completo de feriados y días festivos de Chile ${nextYear}. Información actualizada sobre celebraciones nacionales y días no laborables. Planifica tus días libres.`,
   language: 'es-ES',
   theme: 'light', // system, dark or light
   siteUrl: 'https://feriados24.cl',

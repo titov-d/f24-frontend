@@ -21,11 +21,6 @@ interface Holiday {
   irrenunciable?: boolean
 }
 
-const isWeekend = (date: string): boolean => {
-  const day = dayjs(date).day()
-  return day === 0 || day === 6
-}
-
 const getCountdown = (date: string): { days: number; hours: number } => {
   const now = dayjs().tz('America/Santiago')
   const eventDate = dayjs(date).tz('America/Santiago')

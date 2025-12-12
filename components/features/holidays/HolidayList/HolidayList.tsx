@@ -23,7 +23,7 @@ const HolidayList: React.FC = () => {
   const {
     filteredHolidays,
     nextHoliday,
-    currentHoliday,
+    currentHoliday: _currentHoliday,
     visibleNextHoliday
   } = useFilteredHolidays(holidays, filters);
 

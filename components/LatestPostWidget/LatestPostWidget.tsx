@@ -64,11 +64,11 @@ const LatestPostWidget: React.FC = () => {
   // Use featured_image or fallback to placeholder
   const imageUrl = post.featured_image || PLACEHOLDER_IMAGES[0]
 
-  // Link to blog post - for now disabled since blog routes don't exist
-  const postUrl = '#' // `/blog/${post.slug || post.id}`
+  // Link to blog post
+  const postUrl = `/blog/${post.slug || post.id}`
 
   return (
-    <div className="flex h-full w-full flex-col rounded-lg xl:flex-row">
+    <Link href={postUrl} className="flex h-full w-full flex-col rounded-lg xl:flex-row hover:opacity-90 transition-opacity">
       {/* Image - top on mobile, left on desktop */}
       <div className="relative h-[200px] w-full overflow-hidden rounded-t-lg xl:h-full xl:w-1/2 xl:rounded-l-lg xl:rounded-tr-none">
         <Image
@@ -94,7 +94,7 @@ const LatestPostWidget: React.FC = () => {
           {formatDate(post.published_at)}
         </p>
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -81,6 +81,10 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'http2.mlstatic.com',
         },
+        {
+          protocol: 'https',
+          hostname: 'res.cloudinary.com',
+        },
       ],
       unoptimized,
     },

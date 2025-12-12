@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import CustomCheckbox from '@/components/CustomCheckbox/CustomCheckbox';
 import { HolidayFilters as FiltersType } from '../types';
 
@@ -11,6 +11,8 @@ export const HolidayFilters: React.FC<HolidayFiltersProps> = ({
   filters,
   onFilterChange
 }) => {
+  const nextYear = useMemo(() => new Date().getFullYear() + 1, []);
+
   const handleWeekendsChange = () => {
     onFilterChange({ ...filters, showWeekends: !filters.showWeekends });
   };
@@ -44,10 +46,10 @@ export const HolidayFilters: React.FC<HolidayFiltersProps> = ({
           checked={filters.showNextYear}
           onChange={handleNextYearChange}
           className="custom-checkbox__input"
-          aria-label="Feriados 2025"
+          aria-label={`Feriados ${nextYear}`}
           color="#000000"
         />
-        <p className="font-semibold leading-[28px] text-gray-600">Feriados 2025</p>
+        <p className="font-semibold leading-[28px] text-gray-600">Feriados {nextYear}</p>
       </div>
     </div>
   );

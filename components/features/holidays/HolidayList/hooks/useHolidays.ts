@@ -13,16 +13,30 @@ export const useHolidays = () => {
     const fetchHolidays = async () => {
       try {
         const currentYear = dayjs().year();
-        const response = await fetch(`${API_URL}/holidays-simple/?year=${currentYear}`);
+        const nextYear = currentYear + 1;
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Fetch both current and next year holidays
+        const [currentResponse, nextResponse] = await Promise.all([
+          fetch(`${API_URL}/holidays-simple/?year=${currentYear}`),
+          fetch(`${API_URL}/holidays-simple/?year=${nextYear}`)
+        ]);
+
+        if (!currentResponse.ok) {
+          throw new Error(`HTTP error! status: ${currentResponse.status}`);
         }
 
-        const data = await response.json();
+        const currentData = await currentResponse.json();
+        const nextData = nextResponse.ok ? await nextResponse.json() : { holidays: [] };
 
         const now = dayjs().tz('America/Santiago');
-        const sortedHolidays = data.holidays.sort((a: Holiday, b: Holiday) => {
+
+        // Combine holidays from both years
+        const allHolidaysData = [
+          ...(currentData.holidays || []),
+          ...(nextData.holidays || [])
+        ];
+
+        const sortedHolidays = allHolidaysData.sort((a: Holiday, b: Holiday) => {
           return dayjs(a.date).diff(dayjs(b.date));
         });
 

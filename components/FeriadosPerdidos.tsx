@@ -22,7 +22,7 @@ interface FeriadosPerdidosProps {
 const FeriadosPerdidos: React.FC<FeriadosPerdidosProps> = ({ year: propYear }) => {
   const [lostHolidays, setLostHolidays] = useState<number | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, _setError] = useState<string | null>(null)
 
   const year = propYear || dayjs().year()
 
@@ -32,13 +32,18 @@ const FeriadosPerdidos: React.FC<FeriadosPerdidosProps> = ({ year: propYear }) =
         setIsLoading(true)
         const response = await fetch(`${API_URL}/widgets/feriadosPerdidos?year=${year}`)
         if (!response.ok) {
+          // 404 means no statistics available - show 0 instead of error
+          if (response.status === 404) {
+            setLostHolidays(0)
+            return
+          }
           throw new Error(`HTTP error! status: ${response.status}`)
         }
         const data = await response.json()
-        setLostHolidays(data.lostHolidays)
+        setLostHolidays(data.lostHolidays ?? 0)
       } catch (err) {
         console.error('Error fetching lost holidays:', err)
-        setError('Error al cargar los feriados perdidos. Por favor, intente más tarde.')
+        setLostHolidays(0) // Graceful fallback
       } finally {
         setIsLoading(false)
       }

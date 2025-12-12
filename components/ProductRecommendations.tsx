@@ -11,11 +11,11 @@ interface ProductData {
   id: string
   title: string
   price: number
-  original_price?: number
-  discount_percentage?: number
+  original_price?: number | null
+  discount_percentage?: number | null
   thumbnail_url: string
   permalink: string
-  seller_name?: string
+  marketplace?: string
   shipping_free?: boolean
 }
 
@@ -27,8 +27,8 @@ const ProductRecommendations: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Fetch recommended products from backend - limit to 2 for testing
-        const response = await fetch(`${API_URL}/api/marketplace/products?limit=2&min_discount=10`, {
+        // Fetch recommended products from backend with trailing slash
+        const response = await fetch(`${API_URL}/api/marketplace/products/?per_page=2&min_discount=10`, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -39,9 +39,9 @@ const ProductRecommendations: React.FC = () => {
         }
 
         const data = await response.json()
-        // API returns array directly, limit to 2 products
-        const limitedProducts = Array.isArray(data) ? data.slice(0, 2) : []
-        setProducts(limitedProducts)
+        // API returns { products: [...], success: true, ... }
+        const productList = data.products || []
+        setProducts(productList.slice(0, 2))
         setLoading(false)
       } catch (error) {
         console.error('Error fetching product data:', error)
@@ -76,12 +76,9 @@ const ProductRecommendations: React.FC = () => {
 }
 
 const ProductCard: React.FC<{ product: ProductData }> = ({ product }) => {
-  // Use prices directly from database
-  // price = current/discounted price
-  // original_price = original price before discount (if exists)
-  const discountPercentage = product.discount_percentage || 0
+  const discountPercentage = product.discount_percentage ?? 0
   const currentPrice = product.price
-  const originalPrice = product.original_price || currentPrice
+  const originalPrice = product.original_price ?? currentPrice
 
   return (
     <Link
@@ -99,7 +96,7 @@ const ProductCard: React.FC<{ product: ProductData }> = ({ product }) => {
       />
       <div>
         <h2 className="text-md max-w-[200px] font-semibold">{product.title}</h2>
-        <h3 className="mb-1 text-sm text-gray-500">{product.seller_name || 'MercadoLibre'}</h3>
+        <h3 className="mb-1 text-sm text-gray-500">{product.marketplace || 'MercadoLibre'}</h3>
         <div className="flex flex-col">
           {discountPercentage > 0 && (
             <del className="text-sm font-semibold text-gray-400" aria-label="Precio original">

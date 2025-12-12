@@ -16,17 +16,6 @@ dayjs.tz.setDefault(TIMEZONE)
 // Use the new FastAPI backend
 const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:8001/api/v1'
 
-interface Holiday {
-  date: string
-  name: string
-}
-
-interface WeekendDay {
-  date: string
-  dayOfWeek: number
-  holiday: Holiday | null
-}
-
 interface LongWeekend {
   longestWeekend: number
   description: string
@@ -65,18 +54,36 @@ const FeriadosXL: React.FC<FeriadosXLProps> = ({ year: propYear }) => {
     fetchLongestWeekend()
   }, [year])
 
-  const getDayName = (dayOfWeek: number): string => {
-    const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
-    return days[dayOfWeek]
-  }
-
   if (isLoading) return <div className="text-center">Cargando...</div>
   if (error) return <div className="text-center text-red-500">{error}</div>
-  if (!longestWeekend) return null
+  if (!longestWeekend || !longestWeekend.dateRange || longestWeekend.longestWeekend === 0) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-4">
+        <p className="text-sm text-gray-500">No hay datos de feriados XL para {year}</p>
+      </div>
+    )
+  }
 
-  const [startStr, endStr] = longestWeekend.dateRange.split(' - ')
+  const dateParts = longestWeekend.dateRange.split(' - ')
+  if (dateParts.length !== 2) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-4">
+        <p className="text-sm text-gray-500">Formato de fecha no válido</p>
+      </div>
+    )
+  }
+
+  const [startStr, endStr] = dateParts
   const start = dayjs.tz(startStr, TIMEZONE)
   const end = dayjs.tz(endStr, TIMEZONE)
+
+  if (!start.isValid() || !end.isValid()) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-4">
+        <p className="text-sm text-gray-500">Error al procesar fechas</p>
+      </div>
+    )
+  }
   const dayCount = longestWeekend.longestWeekend
 
   return (
