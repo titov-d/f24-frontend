@@ -5,48 +5,47 @@ import Image from 'next/image'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-// Use the new FastAPI backend
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:8001/api/v1'
-
-interface ProductData {
-  id: number
-  name: string
-  brand: string
-  imageUrl: string
-  originalPrice: number
-  discountedPrice: number
-  discountPercentage: number
-  href: string
+interface Product {
+  id: string
+  title: string
+  price: number
+  original_price?: number
+  thumbnail_url?: string
+  permalink: string
+  discount_percentage?: number
+  shipping_free: boolean
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001'
+
 const ProductRecommendations: React.FC = () => {
-  const [products, setProducts] = useState<ProductData[]>([])
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProducts = async () => {
-      
-
       try {
-        const response = await fetch('https://www.fechaslibres.cl/api/randomProducts')
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
+        // Get products 6 and 7 (indices 5, 6)
+        const response = await fetch(`${API_URL}/api/marketplace/holiday-products/featured?limit=7&shuffle=true`)
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
         const data = await response.json()
-        setProducts(data)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error fetching product data:', error)
-        setError('Failed to load product data')
+        if (data.products && data.products.length > 5) {
+          setProducts(data.products.slice(5, 7))
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err)
+        setError('Failed to load')
+      } finally {
         setLoading(false)
       }
     }
-
     fetchProducts()
   }, [])
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('es-CL').format(price)
+  }
 
   if (loading) {
     return (
@@ -57,48 +56,56 @@ const ProductRecommendations: React.FC = () => {
     )
   }
 
-  if (error) {
-    return <div className="text-red-500">Error: {error}</div>
-  }
+  if (error || products.length === 0) return null
 
   return (
     <div className="flex h-full flex-col gap-2">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} formatPrice={formatPrice} />
       ))}
     </div>
   )
 }
 
-const ProductCard: React.FC<{ product: ProductData }> = ({ product }) => (
+const ProductCard: React.FC<{ product: Product; formatPrice: (p: number) => string }> = ({
+  product,
+  formatPrice
+}) => (
   <Link
-    href={product.href}
+    href={product.permalink}
     target="_blank"
     rel="noopener noreferrer"
     className="flex w-full flex-1 items-center gap-3 rounded-lg bg-gradient-to-br from-[#F3F2F5] to-[#EEEEEE] p-3"
   >
-    <Image
-      src={product.imageUrl}
-      alt={product.name}
-      width={100}
-      height={100}
-      className="h-[100px] w-auto mix-blend-darken"
-    />
+    <div className="relative h-[100px] w-[100px] flex-shrink-0 overflow-hidden rounded bg-transparent">
+      {product.thumbnail_url && (
+        <Image
+          src={product.thumbnail_url}
+          alt={product.title}
+          fill
+          className="object-contain p-1 mix-blend-darken"
+          sizes="100px"
+        />
+      )}
+    </div>
     <div>
-      <h2 className="text-md max-w-[200px] font-semibold">{product.name}</h2>
-      <h3 className="mb-1 text-sm text-gray-500">{product.brand}</h3>
-      <div className="flex flex-col">
-        <del className="text-sm font-semibold text-gray-400" aria-label="Precio original">
-          <data value={product.originalPrice}>${product.originalPrice.toLocaleString()}</data>
-        </del>
-        <data value={product.discountedPrice} className="text-sm font-semibold">
-          ${product.discountedPrice.toLocaleString()}{' '}
-          <span
-            className="relative bottom-[1px] rounded-md bg-red-600 bg-opacity-10 px-[6px] py-[2px] text-[10px] font-semibold text-red-500"
-            aria-label="Porcentaje de descuento"
-          >
-            -{product.discountPercentage}%
-          </span>
+      <h2 className="line-clamp-2 text-md max-w-[200px] font-semibold">{product.title}</h2>
+      {product.shipping_free && (
+        <span className="text-xs text-green-600">Envio gratis</span>
+      )}
+      <div className="mt-1 flex flex-col">
+        {product.original_price && product.original_price > product.price && (
+          <del className="text-sm font-semibold text-gray-400" aria-label="Precio original">
+            ${formatPrice(product.original_price)}
+          </del>
+        )}
+        <data value={product.price} className="text-sm font-semibold">
+          ${formatPrice(product.price)}{' '}
+          {product.discount_percentage && product.discount_percentage > 0 && (
+            <span className="relative bottom-[1px] rounded-md bg-red-600 bg-opacity-10 px-[6px] py-[2px] text-[10px] font-semibold text-red-500">
+              -{product.discount_percentage}%
+            </span>
+          )}
         </data>
       </div>
     </div>
