@@ -1,14 +1,22 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "Feriados24 - Calendario de Feriados Chile",
+  "short_name": "Feriados24",
+  "description": "Calendario completo de feriados y días festivos de Chile",
   "icons": [
     {
-      "src": "/android-chrome-96x96.png",
+      "src": "/static/favicons/android-chrome-96x96.png",
       "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/favicons/apple-touch-icon.png",
+      "sizes": "180x180",
       "type": "image/png"
     }
   ],
-  "theme_color": "#000000",
-  "background_color": "#000000",
-  "display": "standalone"
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
 }
